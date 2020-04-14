@@ -2,6 +2,8 @@
 
 Various different Slack slash commands
 
+* /np [Last.FM username] - Retrieves the current track or your last scrobbled track
+
 ## Prerequisites
 
 You will need [Leiningen][] 2.0.0 or above installed.
