@@ -12,7 +12,14 @@ You will need [Leiningen][] 2.0.0 or above installed.
 
 ## Running
 
-To start the API, run:
+You'll need to include the following environment variables
+
+* SLACK_SIGNING_SECRET
+* LAST_FM_API_KEY
+* SPOTIFY_CLIENT
+* SPOTIFY_SECRET
+
+To start the API, run (including environment variables):
 
     lein ring server-headless
 
