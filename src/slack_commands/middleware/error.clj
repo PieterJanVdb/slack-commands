@@ -9,4 +9,7 @@
     (try
       (handler request)
       (catch clojure.lang.ExceptionInfo e
+        (response (format-error (get-error-message e))))
+      (catch Exception e
+        (println (.getMessage e))
         (response (format-error (get-error-message e)))))))

@@ -7,12 +7,10 @@
             [slack-commands.middleware.error :refer [wrap-exception]]
             [slack-commands.services.last-fm :refer [get-track]]
             [slack-commands.services.spotify :refer [get-spotify-link]]
-            [slack-commands.error :refer [get-error-message]]
-            [slack-commands.format :refer [format-np format-error]]
+            [slack-commands.format :refer [format-np]]
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.json :refer [wrap-json-response]]
-            [clojure.string :refer [split]]
-            [clojure.tools.trace :refer [trace]]))
+            [clojure.string :refer [split]]))
 
 (defn get-username [text]
   (let [username (first (split text #" "))]
@@ -22,27 +20,17 @@
   (client/post url {:content-type :json :form-params msg}))
 
 (defn handle-np [username]
-  (try
-    (if-let [{:keys [artist name] :as track} (get-track username)]
-      (let [link (get-spotify-link name artist)
-            msg (format-np (assoc track :username username :link link))]
-        {:success true :msg msg})
-      {:error true :msg (str "Could not fetch track for " username)})
-    (catch clojure.lang.ExceptionInfo ex
-      {:error true :msg (get-error-message ex)})
-    (catch Exception ex
-      (println (.getMessage ex))
-      {:error true :msg (get-error-message ex)})))
+  (if-let [{:keys [artist name] :as track} (get-track username)]
+    (let [link (get-spotify-link name artist)
+          msg (format-np (assoc track :username username :link link))]
+      msg)
+    (throw (ex-info (str "Could not get track for " username) {:cause :np-error}))))
 
 (defroutes app-routes
   (-> (POST "/np" [text response_url]
         (if-let [username (and text (get-username text))]
-          (do
-            (future
-              (let [{:keys [success msg]} (trace (handle-np username))]
-                (respond response_url (if success msg (format-error msg)))))
-            {:status 200 :body {:text "Running..."}})
-          (throw (ex-info "Please provide a usename" {:cause :bad-input}))))
+          (respond response_url (handle-np username))
+          (throw (ex-info "Please provide a username" {:cause :bad-input}))))
       (wrap-routes wrap-verify-signature))
   (route/not-found "Not Found"))
 

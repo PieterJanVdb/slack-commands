@@ -4,7 +4,7 @@
 
 (defn- query [username api-key]
   (client/get
-   "https://ws.audioscrobbler.com/2.0"
+   "http://ws.audioscrobbler.com/2.0"
    {:query-params {"method" "user.getrecenttracks"
                    "user" username
                    "api_key" api-key
@@ -30,4 +30,4 @@
         nil))
     (catch Exception ex
       (.printStackTrace ex)
-      (throw (ex-info (str "Could not fetch track for " username) {:cause :last-fm-error})))))
+      (throw (ex-info (str "Could not fetch scrobbles for " username) {:cause :last-fm-error})))))
