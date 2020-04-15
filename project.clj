@@ -7,6 +7,7 @@
                  [environ "1.1.0"]
                  [compojure "1.6.1"]
                  [ring/ring-defaults "0.3.2"]
+                 [ring/ring-jetty-adapter "1.6.3"]
                  [ring/ring-json "0.5.0"]
                  [clj-time "0.15.2"]
                  [clj-http "3.10.0"]
@@ -17,4 +18,6 @@
   :ring {:handler slack-commands.handler/app}
   :profiles
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
-                        [ring/ring-mock "0.3.2"]]}})
+                        [ring/ring-mock "0.3.2"]]}
+   :uberjar {:aot :all
+             :main slack-commands.server}})
