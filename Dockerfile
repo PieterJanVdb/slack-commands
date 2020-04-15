@@ -11,5 +11,8 @@ COPY . .
 # Create JAR
 RUN mv "$(lein ring uberjar | sed -n 's/^Created \(.*standalone\.jar\)/\1/p')" app-standalone.jar
 
+ENV PORT 8080
+EXPOSE 8080
+
 # Run the API on container startup
 CMD ["java", "-jar", "app-standalone.jar"]
