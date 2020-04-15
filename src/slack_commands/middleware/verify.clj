@@ -30,7 +30,7 @@
 
 (defn- is-valid-request [body timestamp signature]
   (let [is-valid-timestamp (valid-timestamp? timestamp)
-        hashed (get-hashed (env :slack-signed-secret) (get-signature body timestamp))
+        hashed (get-hashed (env :slack-signing-secret) (get-signature body timestamp))
         is-valid-signature (= hashed signature)]
     (and is-valid-timestamp is-valid-signature)))
 
