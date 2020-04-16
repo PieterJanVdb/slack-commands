@@ -1,1 +1,1 @@
-web: java $JVM_OPTS -cp target/slack-commands.jar
+web: java -jar target/slack-commands.jar
