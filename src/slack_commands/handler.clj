@@ -40,7 +40,7 @@
             (future
               (let [{:keys [success msg]} ((handle-np username))]
                 (respond response_url (if success msg (format-error msg)))))
-            {:status 200 :body {:text "Running..."}})
+            {:status 200 :body "Running..."})
           (throw (ex-info "Please provide a username" {:cause :bad-input}))))
       (wrap-routes wrap-verify-signature))
   (route/not-found "Not Found"))
