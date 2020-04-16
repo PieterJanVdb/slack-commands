@@ -16,6 +16,7 @@
   :plugins [[lein-ring "0.12.5"]
             [lein-environ "1.1.0"]]
   :ring {:handler slack-commands.handler/app}
+  :uberjar-name "slack-commands.jar"
   :profiles
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                         [ring/ring-mock "0.3.2"]]}
