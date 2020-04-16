@@ -11,6 +11,7 @@
             [slack-commands.format :refer [format-np format-error]]
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.json :refer [wrap-json-response]]
+            [clojure.tools.trace :refer [trace]]
             [clojure.string :refer [split]]))
 
 (defn get-username [text]
@@ -38,7 +39,7 @@
         (if-let [username (and text (get-username text))]
           (do
             (future
-              (let [{:keys [success msg]} ((handle-np username))]
+              (let [{:keys [success msg]} (trace (handle-np username))]
                 (respond response_url (if success msg (format-error msg)))))
             {:status 200 :body "Running..."})
           (throw (ex-info "Please provide a username" {:cause :bad-input}))))
