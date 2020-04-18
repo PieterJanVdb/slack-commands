@@ -7,8 +7,8 @@
 
 (defn handle-one-week [username]
   (let [now (get-ts)]
-    {:text (str "http://collage.cx/" username ".png?" now)}))
+    {:success true :msg {:text (str "http://collage.cx/" username ".png?" now)}}))
 
 (defn handle-one-month [username]
   (let [now (get-ts)]
-    {:text (str "http://collage.cx/" username "/1month.png?" now)}))
+    {:success true :msg {:text (str "http://collage.cx/" username "/1month.png?" now)}}))
