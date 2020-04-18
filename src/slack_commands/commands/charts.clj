@@ -5,10 +5,13 @@
 (defn get-ts []
   (c/to-long (t/now)))
 
+(defn format-chart [url]
+  {:success true :msg {:response_type "in_channel" :text url}})
+
 (defn handle-one-week [username]
   (let [now (get-ts)]
-    {:success true :msg {:text (str "http://collage.cx/" username ".png?" now)}}))
+    (format-chart (str "http://collage.cx/" username ".png?" now))))
 
 (defn handle-one-month [username]
   (let [now (get-ts)]
-    {:success true :msg {:text (str "http://collage.cx/" username "/1month.png?" now)}}))
+    (format-chart (str "http://collage.cx/" username "/1month.png?" now))))
