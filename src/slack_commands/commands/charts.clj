@@ -13,4 +13,4 @@
     (format-chart (str "http://collage.cx/" username ".png?" now))))
 
 (defn handle-one-month [username]
-  (format-chart (str "http://collage.cx/" username "/1month.png?")))
+  (format-chart (str "http://collage.cx/" username "/1month.png")))
