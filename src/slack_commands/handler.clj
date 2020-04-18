@@ -5,45 +5,34 @@
             [slack-commands.middleware.verify :refer [wrap-verify-signature]]
             [slack-commands.middleware.body-string :refer [wrap-body-string]]
             [slack-commands.middleware.error :refer [wrap-exception]]
-            [slack-commands.services.last-fm :refer [get-track]]
-            [slack-commands.services.spotify :refer [get-spotify-link]]
-            [slack-commands.error :refer [get-error-message]]
-            [slack-commands.format :refer [format-np format-error]]
+            [slack-commands.middleware.username :refer [wrap-get-username]]
+            [slack-commands.format :refer [format-error]]
+            [slack-commands.commands.np :refer [handle-np]]
+            [slack-commands.commands.charts :refer [handle-one-week handle-one-month]]
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
-            [ring.middleware.json :refer [wrap-json-response]]
-            [clojure.tools.trace :refer [trace]]
-            [clojure.string :refer [split]]))
-
-(defn get-username [text]
-  (let [username (first (split text #" "))]
-    (if (empty? username) nil username)))
+            [ring.middleware.json :refer [wrap-json-response]]))
 
 (defn respond [url msg]
   (client/post url {:content-type :json :form-params msg}))
 
-(defn handle-np [username]
-  (try
-    (if-let [{:keys [artist name] :as track} (get-track username)]
-      (let [link (get-spotify-link name artist)
-            msg (format-np (assoc track :username username :link link))]
-        {:success true :msg msg})
-      {:error true :msg (str "Could not fetch track for " username)})
-    (catch clojure.lang.ExceptionInfo ex
-      {:error true :msg (get-error-message ex)})
-    (catch Exception ex
-      (println (.getMessage ex))
-      {:error true :msg (get-error-message ex)})))
+(defn execute-command [response_url command args]
+  (future
+    (let [{:keys [success msg]} (command args)]
+      (respond response_url (if success msg (format-error msg)))))
+  {:status 200 :body "Running..."})
+
+(defroutes commands
+  (POST "/np" [response_url :as {username :username}]
+    (execute-command response_url handle-np username))
+  (POST "/1week" [response_url :as {username :username}]
+    (execute-command response_url handle-one-week username))
+  (POST "/1month" [response_url :as {username :username}]
+    (execute-command response_url handle-one-month username)))
 
 (defroutes app-routes
-  (-> (POST "/np" [text response_url]
-        (if-let [username (and text (get-username text))]
-          (do
-            (future
-              (let [{:keys [success msg]} (trace (handle-np username))]
-                (respond response_url (if success msg (format-error msg)))))
-            {:status 200 :body "Running..."})
-          (throw (ex-info "Please provide a username" {:cause :bad-input}))))
-      (wrap-routes wrap-verify-signature))
+  (-> commands
+      wrap-get-username
+      #_(wrap-routes wrap-verify-signature))
   (route/not-found "Not Found"))
 
 (def app
