@@ -14,6 +14,9 @@
 (def MAX_LENGTH 9)
 (def TEMPLATE "template.jpg")
 (def TEMPLATE_WIDTH 350)
+(def TEXT_Y_OFFSET 381)
+(def FONT "Arial")
+(def FONT_SIZE 35)
 (def OUTPUT_FORMAT "jpg")
 (def VAL_ERROR
   (str "Please provide a name shorter than or equal to " MAX_LENGTH " characters"))
@@ -30,10 +33,10 @@
 
 (defn draw-name [^BufferedImage image name]
   (let [graphics (.createGraphics image)
-        font (Font. "Arial" Font/PLAIN 35)
+        font (Font. FONT Font/PLAIN FONT_SIZE)
         x-offset (get-x-offset name)]
     (.setFont graphics font)
-    (.drawString graphics name x-offset 381)
+    (.drawString graphics name x-offset TEXT_Y_OFFSET)
     image))
 
 (defn image->base64 [image]
@@ -57,7 +60,9 @@
   {:response_type "in_channel"
    :blocks [{:type "image"
              :alt_text (str name " what the fuck are you talking about")
-             :image_url link}]})
+             :image_url link}
+            {:type "context"
+             :elements [{:type "plain_text" :text (str "By: " username)}]}]})
 
 (defn handle-wtf [name username]
   (try
