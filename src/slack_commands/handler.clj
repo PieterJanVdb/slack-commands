@@ -35,7 +35,7 @@
 (defroutes app-routes
   (-> commands
       wrap-get-username
-      (wrap-routes wrap-verify-signature))
+      #_(wrap-routes wrap-verify-signature))
   (route/not-found "Not Found"))
 
 (def app

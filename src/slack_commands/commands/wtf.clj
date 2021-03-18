@@ -17,7 +17,7 @@
   (str "Please provide a name shorter than or equal to " MAX_LENGTH " characters"))
 
 (defn get-template []
-  (io/file (io/resource TEMPLATE)))
+  (io/resource TEMPLATE))
 
 (defn valid-name? [name]
   (<= (count name) MAX_LENGTH))
