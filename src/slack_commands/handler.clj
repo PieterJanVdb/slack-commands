@@ -18,7 +18,7 @@
 
 (defn execute-command [response_url command & args]
   (future
-    (let [{:keys [success msg]} (command & args)]
+    (let [{:keys [success msg]} (apply command args)]
       (respond response_url (if success msg (format-error msg)))))
   {:status 200 :body "Running..."})
 
@@ -35,7 +35,7 @@
 (defroutes app-routes
   (-> commands
       wrap-get-username
-      #_(wrap-routes wrap-verify-signature))
+      (wrap-routes wrap-verify-signature))
   (route/not-found "Not Found"))
 
 (def app
