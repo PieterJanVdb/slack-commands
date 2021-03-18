@@ -56,19 +56,19 @@
       image->base64
       upload))
 
-(defn format-wtf [name username link]
+(defn format-wtf [name user-id link]
   {:response_type "in_channel"
    :blocks [{:type "image"
              :alt_text (str name " what the fuck are you talking about")
              :image_url link}
             {:type "context"
-             :elements [{:type "plain_text" :text (str "By: " username)}]}]})
+             :elements [{:type "plain_text" :text (str "By: <@" user-id ">")}]}]})
 
-(defn handle-wtf [name username]
+(defn handle-wtf [name user-id]
   (try
     (if (valid-name? name)
       (let [link (get-image-link name)
-            msg (format-wtf name username link)]
+            msg (format-wtf name user-id link)]
         {:success true :msg msg})
       (throw (ex-info VAL_ERROR {:cause :bad-input})))
     (catch clojure.lang.ExceptionInfo ex
