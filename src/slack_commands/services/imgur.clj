@@ -17,6 +17,7 @@
       (json/read-str body :key-fn keyword))))
 
 (defn upload [encoded-image]
+  (println "length base64: " (count (encoded-image)))
   (try
     (let [body (query encoded-image)
           {{link :link} :data} body]

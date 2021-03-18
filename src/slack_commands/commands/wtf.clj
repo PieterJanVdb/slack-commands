@@ -30,8 +30,10 @@
   (let [graphics (.createGraphics image)
         font (Font. "Arial" Font/PLAIN 35)
         x-offset (get-x-offset name)]
+    (println "drawing on image...")
     (.setFont graphics font)
     (.drawString graphics name x-offset 381)
+    (println "done drawing on image!")
     image))
 
 (defn image->base64 [image]
@@ -40,6 +42,7 @@
       (.encodeToString (Base64/getEncoder) (.toByteArray baos))))
 
 (defn generate-image [name]
+  (println "generating image...")
   (-> (get-template)
       ImageIO/read
       (draw-name name)))
@@ -60,6 +63,7 @@
     (if (valid-name? name)
       (let [link (get-image-link name)
             msg (format-wtf name link)]
+        (println "msg" msg)
         {:success true :msg msg})
       (throw (ex-info VAL_ERROR {:cause :bad-input})))
     (catch clojure.lang.ExceptionInfo ex
