@@ -13,7 +13,7 @@
                  [clj-http "3.12.1"]
                  [cheshire "5.10.0"]
                  [clj-spotify "0.1.9"]
-                 [http-kit "2.3.0"]]
+                 [http-kit "2.5.3"]]
   :plugins [[lein-ring "0.12.5"]
             [lein-environ "1.1.0"]]
   :ring {:handler slack-commands.handler/app}
