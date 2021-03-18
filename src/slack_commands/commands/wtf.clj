@@ -57,9 +57,7 @@
   {:response_type "in_channel"
    :blocks [{:type "image"
              :alt_text (str name " what the fuck are you talking about")
-             :image_url link}
-            {:type "context"
-             :elements [{:type "text" :text (str "By: " username)}]}]})
+             :image_url link}]})
 
 (defn handle-wtf [name username]
   (try
