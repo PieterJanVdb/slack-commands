@@ -14,7 +14,11 @@
             [ring.middleware.json :refer [wrap-json-response]]))
 
 (defn respond [url msg]
-  (client/post url {:content-type :json :form-params msg}))
+  (println "responding: " msg)
+  (try
+    (client/post url {:content-type :json :form-params msg})
+    (catch Exception ex
+      (.printStackTrace ex))))
 
 (defn execute-command [response_url command & args]
   (future

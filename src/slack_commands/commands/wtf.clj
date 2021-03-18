@@ -13,7 +13,7 @@
 (def OFFSET_STEP 22)
 (def MAX_LENGTH 9)
 (def TEMPLATE "template.jpg")
-(def TEMPLATE_WIDTH 535)
+(def TEMPLATE_WIDTH 350)
 (def OUTPUT_FORMAT "jpg")
 (def VAL_ERROR
   (str "Please provide a name shorter than or equal to " MAX_LENGTH " characters"))
@@ -62,12 +62,10 @@
              :elements [{:type "text" :text (str "By: " username)}]}]})
 
 (defn handle-wtf [name username]
-  (println name username)
   (try
     (if (valid-name? name)
       (let [link (get-image-link name)
             msg (format-wtf name username link)]
-        (println msg)
         {:success true :msg msg})
       (throw (ex-info VAL_ERROR {:cause :bad-input})))
     (catch clojure.lang.ExceptionInfo ex
