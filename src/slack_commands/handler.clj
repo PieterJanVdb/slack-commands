@@ -9,6 +9,7 @@
             [slack-commands.format :refer [format-error]]
             [slack-commands.commands.np :refer [handle-np]]
             [slack-commands.commands.charts :refer [handle-one-week handle-one-month]]
+            [slack-commands.commands.wtf :refer [handle-wtf]]
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.json :refer [wrap-json-response]]))
 
@@ -27,7 +28,9 @@
   (POST "/1week" [response_url :as {username :username}]
     (execute-command response_url handle-one-week username))
   (POST "/1month" [response_url :as {username :username}]
-    (execute-command response_url handle-one-month username)))
+    (execute-command response_url handle-one-month username))
+  (POST "/wtf" [response_url :as {name :username}]
+    (execute-command response_url handle-wtf name)))
 
 (defroutes app-routes
   (-> commands

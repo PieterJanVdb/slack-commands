@@ -10,9 +10,10 @@
                  [ring/ring-jetty-adapter "1.6.3"]
                  [ring/ring-json "0.5.0"]
                  [clj-time "0.15.2"]
-                 [clj-http "3.10.0"]
+                 [clj-http "3.12.1"]
                  [cheshire "5.10.0"]
-                 [clj-spotify "0.1.9"]]
+                 [clj-spotify "0.1.9"]
+                 [http-kit "2.3.0"]]
   :plugins [[lein-ring "0.12.5"]
             [lein-environ "1.1.0"]]
   :ring {:handler slack-commands.handler/app}

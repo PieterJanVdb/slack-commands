@@ -18,6 +18,7 @@ You'll need to include the following environment variables
 * LAST_FM_API_KEY
 * SPOTIFY_CLIENT
 * SPOTIFY_SECRET
+* IMGUR_CLIENT_ID
 
 To start the API, run (including environment variables):
 

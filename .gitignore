@@ -10,3 +10,7 @@ pom.xml.asc
 /.nrepl-port
 .lein-env
 .env
+profiles.clj
+.lsp/
+log/
+.calva/
