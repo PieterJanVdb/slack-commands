@@ -29,8 +29,8 @@
     (execute-command response_url handle-one-week username))
   (POST "/1month" [response_url :as {username :username}]
     (execute-command response_url handle-one-month username))
-  (POST "/wtf" [response_url :as {name :username username :user_name}]
-    (execute-command response_url handle-wtf name username)))
+  (POST "/wtf" [user_name response_url :as {name :username}]
+    (execute-command response_url handle-wtf name user_name)))
 
 (defroutes app-routes
   (-> commands

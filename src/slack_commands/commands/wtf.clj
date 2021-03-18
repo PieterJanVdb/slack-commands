@@ -1,7 +1,8 @@
 (ns slack-commands.commands.wtf
   (:require [clojure.java.io :as io]
             [slack-commands.services.imgur :refer [upload]]
-            [slack-commands.error :refer [get-error-message]])
+            [slack-commands.error :refer [get-error-message]]
+            [mikera.image.core :refer [resize]])
   (:import [javax.imageio ImageIO]
            [java.awt Font]
            [java.io ByteArrayOutputStream]
@@ -12,6 +13,7 @@
 (def OFFSET_STEP 22)
 (def MAX_LENGTH 9)
 (def TEMPLATE "template.jpg")
+(def TEMPLATE_WIDTH 535)
 (def OUTPUT_FORMAT "jpg")
 (def VAL_ERROR
   (str "Please provide a name shorter than or equal to " MAX_LENGTH " characters"))
@@ -36,13 +38,14 @@
 
 (defn image->base64 [image]
   (with-open [baos (ByteArrayOutputStream.)]
-      (ImageIO/write image OUTPUT_FORMAT baos)
-      (.encodeToString (Base64/getEncoder) (.toByteArray baos))))
+    (ImageIO/write image OUTPUT_FORMAT baos)
+    (.encodeToString (Base64/getEncoder) (.toByteArray baos))))
 
 (defn generate-image [name]
   (-> (get-template)
       ImageIO/read
-      (draw-name name)))
+      (draw-name name)
+      (resize TEMPLATE_WIDTH)))
 
 (defn get-image-link [name]
   (-> name

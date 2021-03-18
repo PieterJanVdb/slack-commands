@@ -11,7 +11,7 @@
   (let [client-id (env :imgur-client-id)
         options {:form-params {:image encoded-image :type "base64"}
                  :headers {"Authorization" (str "Client-ID " client-id)}}
-        {:keys [status body error]} @(http/post "https://api.imgur.com/3/upload" options)]
+        {:keys [body error]} @(http/post "https://api.imgur.com/3/upload" options)]
     (if error
       (throw error)
       (json/read-str body :key-fn keyword))))

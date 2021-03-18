@@ -13,7 +13,8 @@
                  [clj-http "3.12.1"]
                  [cheshire "5.10.0"]
                  [clj-spotify "0.1.9"]
-                 [http-kit "2.5.3"]]
+                 [http-kit "2.5.3"]
+                 [net.mikera/imagez "0.12.0"]]
   :plugins [[lein-ring "0.12.5"]
             [lein-environ "1.1.0"]]
   :ring {:handler slack-commands.handler/app}
