@@ -8,16 +8,18 @@
    to upload the image. Should look into why but for the
    meantime this will do."
   [encoded-image]
+  (println "start request...")
   (let [client-id (env :imgur-client-id)
         options {:form-params {:image encoded-image :type "base64"}
                  :headers {"Authorization" (str "Client-ID " client-id)}}
-        {:keys [body error]} @(http/post "https://api.imgur.com/3/upload" options)]
+        {:keys [status body error]} @(http/post "https://api.imgur.com/3/upload" options)]
+    (println "finished request with status " status)
     (if error
       (throw error)
       (json/read-str body :key-fn keyword))))
 
 (defn upload [encoded-image]
-  (println "length base64: " (count (encoded-image)))
+  (println "length base64: " (count encoded-image))
   (try
     (let [body (query encoded-image)
           {{link :link} :data} body]
