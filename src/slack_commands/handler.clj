@@ -16,9 +16,9 @@
 (defn respond [url msg]
   (client/post url {:content-type :json :form-params msg}))
 
-(defn execute-command [response_url command args]
+(defn execute-command [response_url command & args]
   (future
-    (let [{:keys [success msg]} (command args)]
+    (let [{:keys [success msg]} (command & args)]
       (respond response_url (if success msg (format-error msg)))))
   {:status 200 :body "Running..."})
 
@@ -29,8 +29,8 @@
     (execute-command response_url handle-one-week username))
   (POST "/1month" [response_url :as {username :username}]
     (execute-command response_url handle-one-month username))
-  (POST "/wtf" [response_url :as {name :username}]
-    (execute-command response_url handle-wtf name)))
+  (POST "/wtf" [response_url :as {name :username username :user_name}]
+    (execute-command response_url handle-wtf name username)))
 
 (defroutes app-routes
   (-> commands
