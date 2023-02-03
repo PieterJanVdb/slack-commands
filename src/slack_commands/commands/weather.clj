@@ -4,8 +4,8 @@
 
 (defn- format-weather [weather]
   (let [{:keys [country-emoji name description temperature feels-like weather-emoji]} weather]
-    {:text (str "The weather in *" name "* " country-emoji
-                " currently: " description " " weather-emoji ", "
+    {:text (str "*" name "* " country-emoji
+                " : " description " " weather-emoji ", "
                 (:c temperature) " °C/" (:f temperature)
                 " °F (feels like " (:c feels-like)
                 " °C/" (:f feels-like) " °F)")
