@@ -13,7 +13,7 @@
    "11d" ":thunder_cloud_and_rain:"
    "13d" ":snowflake:"
    "50d" ":fog:"
-   "01n" ":new-moon:"
+   "01n" ":new_moon:"
    "02n" ":cloud:"
    "03n" ":cloud:"
    "04n" ":cloud:"
