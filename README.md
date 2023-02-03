@@ -19,6 +19,7 @@ You'll need to include the following environment variables
 * SPOTIFY_CLIENT
 * SPOTIFY_SECRET
 * IMGUR_CLIENT_ID
+* OPEN_WEATHER_API_KEY
 
 To start the API, run (including environment variables):
 

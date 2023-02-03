@@ -10,7 +10,7 @@
                    "api_key" api-key
                    "format" "json"
                    "limit" 1}
-    :as :json-strict}))
+    :as :json}))
 
 (defn- true-string? [s] (= s "true"))
 
