@@ -1,9 +1,8 @@
 (ns slack-commands.commands.charts
-  (:require [clj-time.core :as t]
-            [clj-time.coerce :as c]))
+  (:require [java-time :refer [instant to-millis-from-epoch]]))
 
 (defn get-ts []
-  (c/to-long (t/now)))
+  (to-millis-from-epoch (instant)))
 
 (defn format-chart [url]
   {:success true :msg {:response_type "in_channel" :text url}})

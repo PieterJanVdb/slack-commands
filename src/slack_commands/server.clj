@@ -3,5 +3,5 @@
             [slack-commands.handler :refer [app]])
   (:gen-class))
 
-(defn -main [& args]
+(defn -main []
   (run-jetty app {:port (Integer/valueOf (or (System/getenv "PORT") "8080"))}))

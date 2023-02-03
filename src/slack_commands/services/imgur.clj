@@ -1,24 +1,18 @@
 (ns slack-commands.services.imgur
-  (:require [org.httpkit.client :as http]
-            [environ.core :refer [env]]
-            [clojure.data.json :as json]))
+  (:require [clj-http.client :as client]
+            [environ.core :refer [env]]))
 
-(defn query
-  "For some reason I had to use another http client here
-   to upload the image. Should look into why but for the
-   meantime this will do."
-  [encoded-image]
+(defn- request [encoded-image]
   (let [client-id (env :imgur-client-id)
         options {:form-params {:image encoded-image :type "base64"}
-                 :headers {"Authorization" (str "Client-ID " client-id)}}
-        {:keys [body error]} @(http/post "https://api.imgur.com/3/upload" options)]
-    (if error
-      (throw error)
-      (json/read-str body :key-fn keyword))))
+                 :headers {"Authorization" (str "Client-ID " client-id)}
+                 :as :json}
+        {:keys [body]} (client/post "https://api.imgur.com/3/upload" options)]
+    body))
 
 (defn upload [encoded-image]
   (try
-    (let [body (query encoded-image)
+    (let [body (request encoded-image)
           {{link :link} :data} body]
       link)
     (catch Exception ex

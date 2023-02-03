@@ -1,6 +1,5 @@
 (ns slack-commands.middleware.verify
-  (:require [clj-time.core :as t]
-            [clj-time.coerce :as c]
+  (:require [java-time :refer [instant to-millis-from-epoch]]
             [environ.core :refer [env]]
             [ring.util.response :refer [response status]])
   (:import (javax.crypto Mac)
@@ -10,7 +9,7 @@
 (def signing-algorithm "HMACSHA256")
 
 (defn- valid-timestamp? [timestamp]
-  (let [now (c/to-long (t/now))]
+  (let [now (to-millis-from-epoch (instant))]
     (> (- now timestamp) (* 60 5))))
 
 (defn- get-signature [body timestamp]
