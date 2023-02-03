@@ -4,11 +4,11 @@
 
 (defn- format-weather [weather]
   (let [{:keys [country-emoji name description temperature feels-like weather-emoji]} weather]
-    {:text (str "*" name "* " country-emoji
-                " : " description " " weather-emoji ", "
-                (:c temperature) " °C/" (:f temperature)
-                " °F (feels like " (:c feels-like)
-                " °C/" (:f feels-like) " °F)")
+    {:text (str name " " country-emoji
+                " — _" description "_ " weather-emoji " — *"
+                (:c temperature) " °C / " (:f temperature)
+                " °F* (feels like " (:c feels-like)
+                " °C / " (:f feels-like) " °F)")
      :response_type "in_channel"
      :attachments [{:mrkdwn_in ["text"]}]}))
 

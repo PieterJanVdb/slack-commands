@@ -24,7 +24,7 @@
    "50n" ":fog:"})
 
 (defn- c->f [temperature]
-  (float (/ (int (* 100 (+ 32 (* 1.8 temperature)))) 100)))
+  (+ 32 (* 1.8 temperature)))
 
 (defn- request-geo [query]
   (client/get
@@ -48,7 +48,7 @@
         {:keys [lat lon country name]} (first body)]
     {:country-emoji (str ":flag-" (str/lower-case country) ":")
      :coordinates [lat lon]
-     :name (str name ", " country)}))
+     :name name}))
 
 (defn- get-current-weather [coordinates]
   (let [{body :body} (request-current-weather coordinates)]
@@ -62,5 +62,5 @@
         {:keys [temperature feels-like] :as weather} (get-current-weather (:coordinates location))]
     (merge location
            (assoc weather
-                  :temperature  {:c temperature :f (c->f temperature)}
-                  :feels-like {:c feels-like :f (c->f feels-like)}))))
+                  :temperature  {:c (int temperature) :f (int (c->f temperature))}
+                  :feels-like {:c (int feels-like) :f (int (c->f feels-like))}))))
