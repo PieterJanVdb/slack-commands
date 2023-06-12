@@ -55,6 +55,7 @@
     {:description (get-in body [:weather 0 :description])
      :temperature (get-in body [:main :temp])
      :feels-like  (get-in body [:main :feels_like])
+     :humidity    (get-in body [:main :humidity])
      :weather-emoji (get icon-emoji-map (get-in body [:weather 0 :icon]))}))
 
 (defn get-current-weather-by-query [query]
